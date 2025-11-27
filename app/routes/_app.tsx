@@ -1,4 +1,4 @@
-import { Form, Link, NavLink, Outlet } from "react-router";
+import { Form, Link, NavLink, Outlet, useNavigation } from "react-router";
 import { getContacts } from "../data";
 import type { Route } from "./+types/_app";
 
@@ -9,6 +9,8 @@ export async function loader() {
 
 export default function AppLayout({ loaderData }: Route.ComponentProps) {
 	const { contacts } = loaderData;
+	const navigation = useNavigation();
+
 	return (
 		<>
 			<div id="sidebar">
@@ -60,7 +62,10 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
 					)}
 				</nav>
 			</div>
-			<div id="detail">
+			<div
+				className={navigation.state === "loading" ? "loading" : ""}
+				id="detail"
+			>
 				<Outlet />
 			</div>
 		</>
