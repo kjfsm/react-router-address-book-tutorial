@@ -43,7 +43,12 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
 					<Form
 						id="search-form"
 						// 変更されるたびにフォームを送信してクエリを更新する
-						onChange={(event) => submit(event.currentTarget)}
+						onChange={(event) => {
+							const isFirstSearch = q === null;
+							submit(event.currentTarget, {
+								replace: !isFirstSearch,
+							});
+						}}
 						role="search"
 					>
 						<input
