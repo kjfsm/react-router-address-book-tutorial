@@ -21,6 +21,12 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
 	const { contacts, q } = loaderData;
 	const navigation = useNavigation();
 	const submit = useSubmit();
+	// 検索中かどうかを判定する
+	// 遷移中、 navigation.location に値が入る。
+	// 遷移中かつqを含むときを検索中とみなし、スピナーを表示する
+	const searching =
+		navigation.location &&
+		new URLSearchParams(navigation.location.search).has("q");
 	const [query, setQuery] = useState(q || "");
 
 	useEffect(() => {
@@ -42,6 +48,7 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
 					>
 						<input
 							aria-label="Search contacts"
+							className={searching ? "loading" : ""}
 							onChange={(event) => setQuery(event.target.value)}
 							value={query}
 							id="q"
@@ -49,7 +56,7 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
 							placeholder="Search"
 							type="search"
 						/>
-						<div aria-hidden hidden={true} id="search-spinner" />
+						<div aria-hidden hidden={!searching} id="search-spinner" />
 					</Form>
 					<Form method="post">
 						<button type="submit">New</button>
@@ -86,7 +93,9 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
 				</nav>
 			</div>
 			<div
-				className={navigation.state === "loading" ? "loading" : ""}
+				className={
+					navigation.state === "loading" && !searching ? "loading" : ""
+				}
 				id="detail"
 			>
 				<Outlet />
