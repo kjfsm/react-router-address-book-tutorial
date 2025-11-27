@@ -1,8 +1,9 @@
 import {
 	Form,
+	isRouteErrorResponse,
+	Outlet,
 	Scripts,
 	ScrollRestoration,
-	isRouteErrorResponse,
 } from "react-router";
 import type { Route } from "./+types/root";
 
@@ -38,6 +39,9 @@ export default function App() {
 						</li>
 					</ul>
 				</nav>
+			</div>
+			<div id="detail">
+				<Outlet />
 			</div>
 		</>
 	);
