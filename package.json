@@ -6,7 +6,8 @@
 		"build": "cross-env NODE_ENV=production react-router build",
 		"dev": "react-router dev --host",
 		"start": "cross-env NODE_ENV=production react-router-serve ./build/server/index.js",
-		"typecheck": "react-router typegen && tsc"
+		"typecheck": "react-router typegen && tsc",
+		"format": "biome format --write"
 	},
 	"dependencies": {
 		"@react-router/fs-routes": "^7.9.6",
