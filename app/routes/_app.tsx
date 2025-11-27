@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Form, Link, NavLink, Outlet, useNavigation } from "react-router";
 import { getContacts } from "../data";
 import type { Route } from "./+types/_app";
@@ -12,6 +13,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function AppLayout({ loaderData }: Route.ComponentProps) {
 	const { contacts, q } = loaderData;
 	const navigation = useNavigation();
+	const [query, setQuery] = useState(q || "");
+
+	useEffect(() => {
+		setQuery(q || "");
+	}, [q]);
 
 	return (
 		<>
@@ -23,7 +29,8 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
 					<Form id="search-form" role="search">
 						<input
 							aria-label="Search contacts"
-							defaultValue={q || ""}
+							onChange={(event) => setQuery(event.target.value)}
+							value={query}
 							id="q"
 							name="q"
 							placeholder="Search"
