@@ -3,7 +3,7 @@ import { getContacts } from "../data";
 import type { Route } from "./+types/_app";
 
 // 今はSPAなのでクライアント側でロードする
-export async function clientLoader() {
+export async function loader() {
 	const contacts = await getContacts();
 	return { contacts };
 }
