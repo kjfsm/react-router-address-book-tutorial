@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Form, Link, NavLink, Outlet, useNavigation } from "react-router";
+import {
+	Form,
+	Link,
+	NavLink,
+	Outlet,
+	useNavigation,
+	useSubmit,
+} from "react-router";
 import { getContacts } from "../data";
 import type { Route } from "./+types/_app";
 
@@ -13,6 +20,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function AppLayout({ loaderData }: Route.ComponentProps) {
 	const { contacts, q } = loaderData;
 	const navigation = useNavigation();
+	const submit = useSubmit();
 	const [query, setQuery] = useState(q || "");
 
 	useEffect(() => {
@@ -26,7 +34,12 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
 					<Link to="about">React Router Contacts</Link>
 				</h1>
 				<div>
-					<Form id="search-form" role="search">
+					<Form
+						id="search-form"
+						// 変更されるたびにフォームを送信してクエリを更新する
+						onChange={(event) => submit(event.currentTarget)}
+						role="search"
+					>
 						<input
 							aria-label="Search contacts"
 							onChange={(event) => setQuery(event.target.value)}
