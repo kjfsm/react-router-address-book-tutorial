@@ -80,8 +80,13 @@ export default function Contact({ loaderData }: Route.ComponentProps) {
 
 function Favorite({ contact }: { contact: Pick<ContactRecord, "favorite"> }) {
 	// ナビゲーションを生成せず、フォームの送信のみを行う
+	// ナビゲーションではないため、URL は変更されず履歴スタックも影響を受けない
 	const fetcher = useFetcher();
-	const favorite = contact.favorite;
+	// フォームの送信中だけ fetcher.formData に値が入るのでそれを優先して表示を更新する
+	// 送信中以外は undefined となる
+	const favorite = fetcher.formData
+		? fetcher.formData.get("favorite") === "true"
+		: contact.favorite;
 
 	return (
 		<fetcher.Form method="post">
@@ -93,6 +98,9 @@ function Favorite({ contact }: { contact: Pick<ContactRecord, "favorite"> }) {
 			>
 				{favorite ? "★" : "☆"}
 			</button>
+			<span style={{ fontSize: "20px" }}>
+				{`(fetcher.formData.favorite: ${fetcher.formData?.get("favorite")})`}
+			</span>
 		</fetcher.Form>
 	);
 }
